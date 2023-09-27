@@ -1,23 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import SearchBar from "./SearchBar/SearchBar";
+import SearchResults from "./SearchResults/SearchResults";
+import Playlist from "./Playlist/Playlist";
+import { useState } from "react";
 
 function App() {
+  const [playlistTracks, setPlaylistTracks]= useState([]);
+  const addToPlaylist = (trackToAdd) => {
+    console.log("I am at the APP!");
+    setPlaylistTracks(prev => [...prev, trackToAdd]);
+  };
+  const removeFromPlaylist = (trackToRemove) => {
+    const index = playlistTracks.findIndex(track => track.key===trackToRemove.key);
+    setPlaylistTracks(prev => prev.splice(index, 1));
+  }
+
+  const savePlaylist = (playlistName, trackList)=>{
+    console.log(`Saving ${playlistName} playlist`);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <SearchBar />
+      <table>
+      <tbody>
+        <tr>
+          <td>
+            <SearchResults addToPlaylist={addToPlaylist} />
+          </td>
+          <td>
+            <Playlist savePlaylist={savePlaylist} playlistTracks={playlistTracks} removeFromPlaylist={removeFromPlaylist} />
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
   );
 }
