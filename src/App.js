@@ -4,30 +4,41 @@ import SearchBar from "./SearchBar/SearchBar";
 import SearchResults from "./SearchResults/SearchResults";
 import Playlist from "./Playlist/Playlist";
 import { useState } from "react";
+import { authorize, search, createAndFillPlaylist } from "./utils/spotifyConnector";
 
 function App() {
   const [playlistTracks, setPlaylistTracks]= useState([]);
+  const [searchResults, setSearchResults] = useState([]);
   const addToPlaylist = (trackToAdd) => {
-    console.log("I am at the APP!");
     setPlaylistTracks(prev => [...prev, trackToAdd]);
   };
   const removeFromPlaylist = (trackToRemove) => {
-    const index = playlistTracks.findIndex(track => track.key===trackToRemove.key);
+    const index = playlistTracks.findIndex(track => track.id===trackToRemove.id);
     setPlaylistTracks(prev => prev.splice(index, 1));
   }
 
   const savePlaylist = (playlistName, trackList)=>{
     console.log(`Saving ${playlistName} playlist`);
+    createAndFillPlaylist(playlistName, playlistTracks);
+  }
+
+  const makeSearch = (term)=>{
+    search(term).then(data => {setSearchResults(data)});
+  }
+
+  const testButton = ()=>{
+    authorize();
   }
 
   return (
     <div className="App">
-      <SearchBar />
+      <SearchBar makeSearch={makeSearch} />
       <table>
       <tbody>
         <tr>
           <td>
-            <SearchResults addToPlaylist={addToPlaylist} />
+            <button onClick={testButton}>TEST</button>
+            <SearchResults searchResults={searchResults} addToPlaylist={addToPlaylist} />
           </td>
           <td>
             <Playlist savePlaylist={savePlaylist} playlistTracks={playlistTracks} removeFromPlaylist={removeFromPlaylist} />

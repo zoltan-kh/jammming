@@ -8,15 +8,13 @@ function Track({
   title = "Into the Storm",
   isPlaylist,
   removeTrackFromList,
-  addTrackToLIst,
+  addTrackToList,
 }) {
   const handleClick = (event) => {
     if (isPlaylist) {
-      console.log("Removing Track");
       removeTrackFromList(id);
     } else {
-      console.log("Adding Track");
-      addTrackToLIst(id);
+      addTrackToList(id);
     }
   };
 

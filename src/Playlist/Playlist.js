@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Tracklist from "../Tracklist/Tracklist";
 
 function Playlist({savePlaylist, removeFromPlaylist, playlistTracks}) {
@@ -19,7 +19,7 @@ function Playlist({savePlaylist, removeFromPlaylist, playlistTracks}) {
       <div>
         <input value={playlistName} onChange = {({target})=>setPlaylistName(target.value)} />
       </div>
-      <Tracklist tracks={playlistTracks} removeTrack={removeTrack} isPlaylist={true}/>
+      <Tracklist key="playList" tracks={playlistTracks} removeTrack={removeTrack} isPlaylist={true}/>
       <div>
         <button type="submit">Save to Spotify!</button>
       </div>
