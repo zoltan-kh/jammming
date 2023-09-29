@@ -1,6 +1,7 @@
 const clientId = "0287be3825a949778c7d25c2f41af729";
 
 export const authorize = () => {
+    console.log('authorize');
   const authUrl = "https://accounts.spotify.com/authorize?";
   const params = `response_type=token&client_id=${clientId}&scope=playlist-modify-private,&redirect_uri=http://localhost:3000/success?`;
   const requestUrl = authUrl + params;
@@ -26,21 +27,21 @@ export const search = async (searchTerm) => {
 export const createAndFillPlaylist = async (playlistName, tracks) => {
   const userId = await getUserId();
   const newPlaylistId = await createPlaylist(playlistName, userId);
-  if(userId && newPlaylistId){
+  if (userId && newPlaylistId) {
     const addTracksUrl = `https://api.spotify.com/v1/playlists/${newPlaylistId}/tracks`;
     const trackIds = [];
-    tracks.map( (track) => {
+    tracks.map((track) => {
       trackIds.push(`spotify:track:${track.id}`);
     });
     const data = {
-      "uris": trackIds,
-      "position": 0
-  }
+      uris: trackIds,
+      position: 0,
+    };
     const postData = {
-      method: 'POST',
-      body : JSON.stringify(data),
-      headers : {  Authorization: `Bearer ${getAccessToken()}` }
-    }
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: { Authorization: `Bearer ${getAccessToken()}` },
+    };
     try {
       const response = await fetch(addTracksUrl, postData);
       const jsonResponse = await response.json();
@@ -48,30 +49,41 @@ export const createAndFillPlaylist = async (playlistName, tracks) => {
       alert(error.message);
     }
   }
-  
+};
+
+export const isLoggedIn = () => {
+  const urlParams = new URLSearchParams(window.location.hash);
+  console.log(urlParams);
+  if (urlParams.get("#access_token")) {
+    console.log(true);
+    return true;
+  } else {
+    console.log(false);
+    return false;
+  }
 };
 
 const createPlaylist = async (playlistName, userId) => {
-    const playlistUrl = `https://api.spotify.com/v1/users/${userId}/playlists`;
-    const data = {
-      "name": playlistName,
-      "description": "New playlist description",
-      "public": false
+  const playlistUrl = `https://api.spotify.com/v1/users/${userId}/playlists`;
+  const data = {
+    name: playlistName,
+    description: "New playlist description",
+    public: false,
+  };
+  const postData = {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: { Authorization: `Bearer ${getAccessToken()}` },
+  };
+
+  try {
+    const response = await fetch(playlistUrl, postData);
+    const jsonResponse = await response.json();
+    return await jsonResponse.id;
+  } catch (error) {
+    alert(error.message);
   }
-    const postData = {
-      method: 'POST',
-      body : JSON.stringify(data),
-      headers : {  Authorization: `Bearer ${getAccessToken()}` }
-    }
-  
-    try {
-      const response = await fetch(playlistUrl, postData);
-      const jsonResponse = await response.json();
-      return await jsonResponse.id;
-    } catch (error) {
-      alert(error.message);
-    }
-}
+};
 
 const getUserId = async () => {
   const userUrl = "https://api.spotify.com/v1/me";
