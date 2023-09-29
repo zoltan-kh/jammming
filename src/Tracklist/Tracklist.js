@@ -5,44 +5,31 @@ function Tracklist({ tracks, isPlaylist, removeTrack, addToList }) {
   const trackList = [];
 
   const removeTrackFromList = (trackKey) => {
-    console.log(trackKey);
-    const index = trackList.findIndex(track => track.key===trackKey);
-    removeTrack(trackList[index]);
+    const index = tracks.findIndex(track => track.id===trackKey);
+    removeTrack(tracks[index]);
   };
 
-  const addTrackToLIst = (trackKey) => {
-    console.log(trackKey);
-    const index = trackList.findIndex(track => track.key===trackKey);
-    addToList(trackList[index]);
+  const addTrackToList = (trackKey) => {
+    const index = tracks.findIndex(track => track.id===trackKey);
+    addToList(tracks[index]);
   };
 
   if (tracks.length) {
-    for (let track in tracks) {
-      trackList.push(
-        <Track
+    tracks.map((track)=>{
+      
+      trackList.push(<Track
           key={track.id}
           id={track.id}
-          album={track.album}
-          duration={track.duration}
-          artist={track.artist}
-          title={track.title}
+          album={track.album.name}
+          duration={track.duration_ms}
+          artist={track.artists[0].name}
+          title={track.name}
           isPlaylist={isPlaylist}
           removeTrackFromList={removeTrackFromList}
-        />
-      );
-    }
-  } else {
-    for (let i = 0; i < 7; i++) {
-      trackList.push(
-        <Track
-          key={i}
-          id={i}
-          removeTrackFromList={removeTrackFromList}
-          addTrackToLIst={addTrackToLIst}
-          isPlaylist={isPlaylist}
-        />
-      );
-    }
+          addTrackToList={addTrackToList}
+        />)
+    })
+    
   }
 
   return <div>{trackList}</div>;

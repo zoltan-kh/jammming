@@ -1,15 +1,8 @@
 import React from "react";
-import Track from "../Track/Track";
 import Tracklist from "../Tracklist/Tracklist";
 
-function SearchResults({ searchResult = [], searchTerm, addToPlaylist }) {
-  const tracksFound = [];
- /* if (searchResult.length) {
-    for (let track in tracksFound) {
-      tracksFound.push(<Track />);
-    }
-  }*/
-
+function SearchResults({ searchResults = [], searchTerm, addToPlaylist }) {
+  
   const addToList = (track)=>{
     addToPlaylist(track);
   }
@@ -18,7 +11,7 @@ function SearchResults({ searchResult = [], searchTerm, addToPlaylist }) {
     <div>
       <h1>Search results for {searchTerm}</h1>
       <div>
-        <Tracklist tracks={searchResult} addToList={addToList} sourceType="searchResult" />
+        <Tracklist key="searchList" tracks={searchResults} addToList={addToList} sourceType="searchResult" />
       </div>
     </div>
   );
