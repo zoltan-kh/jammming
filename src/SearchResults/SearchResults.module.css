@@ -1,0 +1,12 @@
+.container{
+    width: 50%;
+    display: inline-block;
+    background-image: linear-gradient(to right, rgb(0, 255, 251), black, black );
+    vertical-align: top;
+}
+
+.header{
+    color: rgb(17, 227, 255);
+    font-family: tahoma;
+    font-size: 18px;
+}

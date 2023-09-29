@@ -1,5 +1,6 @@
 import React from "react";
 import Track from "../Track/Track";
+import styles from './TrackList.module.css'
 
 function Tracklist({ tracks, isPlaylist, removeTrack, addToList }) {
   const trackList = [];
@@ -32,7 +33,7 @@ function Tracklist({ tracks, isPlaylist, removeTrack, addToList }) {
     
   }
 
-  return <div>{trackList}</div>;
+  return <div className={styles.container}>{trackList}</div>;
 }
 
 export default Tracklist;

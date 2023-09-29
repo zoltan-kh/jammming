@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Tracklist from "../Tracklist/Tracklist";
+import styles from './Playlist.module.css'
 
 function Playlist({savePlaylist, removeFromPlaylist, playlistTracks}) {
   const [playlistName, setPlaylistName] = useState("");
@@ -14,14 +15,14 @@ function Playlist({savePlaylist, removeFromPlaylist, playlistTracks}) {
     removeFromPlaylist(track);
   }
   return (
-    <div>
+    <div className={styles.container}>
         <form onSubmit={handleSubmit}>
       <div>
-        <input value={playlistName} onChange = {({target})=>setPlaylistName(target.value)} />
+        <input placeholder="Playlist name..." className={styles.nameField} value={playlistName} onChange = {({target})=>setPlaylistName(target.value)} />
       </div>
       <Tracklist key="playList" tracks={playlistTracks} removeTrack={removeTrack} isPlaylist={true}/>
       <div>
-        <button type="submit">Save to Spotify!</button>
+        <button className={styles.saveButton} type="submit">Save to Spotify!</button>
       </div>
       </form>
     </div>
