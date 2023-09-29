@@ -1,23 +1,31 @@
 import React, { useState } from "react";
+import styles from './SearchBar.module.css'
 
 function SearchBar({makeSearch}) {
   const [searchTerm, setSearchTerm] = useState("");
   const handleSubmit = (event) => {
     event.preventDefault();
-    makeSearch(searchTerm);
+    if(searchTerm){
+      makeSearch(searchTerm);
+    }
+    else{
+      alert('Enter something to search!');
+    }
+    
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <form onSubmit={handleSubmit}>
         <div>
           <input
+            className={styles.searchField}
             value={searchTerm}
             placeholder="Search..."
             onChange={({target}) => setSearchTerm(target.value)}
           />
         </div>
-        <button type="submit">Search!</button>
+        <button className={styles.searchButton} type="submit" >Search!</button>
       </form>
     </div>
   );

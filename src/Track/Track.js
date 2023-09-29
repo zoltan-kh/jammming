@@ -1,4 +1,5 @@
 import React from "react";
+import styles from './Track.module.css'
 
 function Track({
   id = "mockKey",
@@ -19,7 +20,7 @@ function Track({
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <p>{title}</p>
       <p>{album}</p>
       <p>{artist}</p>
