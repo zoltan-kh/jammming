@@ -13,7 +13,7 @@ function Tracklist({ tracks, isPlaylist, removeTrack, addToList }) {
   const addTrackToList = (trackKey) => {
     const index = tracks.findIndex(track => track.id===trackKey);
     addToList(tracks[index]);
-  };
+      };
 
   if (tracks.length) {
     tracks.map((track)=>{

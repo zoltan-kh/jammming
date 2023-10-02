@@ -1,6 +1,67 @@
 .container{
-
+    width: 65%;
     color: rgb(17, 227, 255);
     border-bottom:2px solid rgb(0, 255, 251);
-    
+}
+
+.searchStyle{
+    margin-left: 30%;
+    margin-right: 5%;
+}
+
+.playlistStyle{
+    margin-left: 5%;
+    margin-right: 30%;
+}
+
+.trackInfo{
+    width: 70%;
+    display: inline-block;
+    text-align: left;
+}
+
+.addButtonContainer{
+    width: 20%;
+    display: inline-block;
+    text-align: center;
+}
+
+.trackDuration{
+    width: 10%;
+    display: inline-block;
+    text-align: center;
+}
+
+.title{
+    font-weight: 600;
+    font-size: 2ch;
+}
+
+.artist{
+    font-size: 1.5ch;
+}
+
+.album{
+    font-size: 1.5ch;
+}
+
+
+.trackTime{   
+    float: right;
+    padding-bottom: 30%;
+}
+
+.addButton{
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    max-width: min-content;
+    font-weight: 650;
+    color: rgb(17, 227, 255);
+    font-size: 2.5ch;
+    float: right;
+    padding-bottom: 15%;
 }
