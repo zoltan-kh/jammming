@@ -7,7 +7,7 @@ function Playlist({ savePlaylist, removeFromPlaylist, playlistTracks }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    savePlaylist(playlistName, playlistTracks);
+    savePlaylist(playlistName);
     setPlaylistName("");
   };
 

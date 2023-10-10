@@ -1,13 +1,15 @@
 import "./App.css";
+import { BrowserRouter, Routes, Route, Redirect } from "react-router-dom";
 import SearchBar from "./SearchBar/SearchBar";
 import SearchResults from "./SearchResults/SearchResults";
 import Playlist from "./Playlist/Playlist";
+import SpotifyRedirect from "./SpotifyRedirect/SpotifyRedirect";
 import { useEffect, useState } from "react";
 import {
   authorize,
   search,
   createAndFillPlaylist,
-  isLoggedIn,
+  isLoggedIn
 } from "./utils/spotifyConnector";
 
 function App() {
@@ -27,13 +29,18 @@ function App() {
         trackCount++;
       }
     });
-    console.log(playlistTracks);
-    console.log(trackCount);
     if (trackCount > 0) {
       alert("This track is already in your playlist!");
     } else {
       setPlaylistTracks((prev) => [...prev, trackToAdd]);
     }
+
+    const index = searchResults.findIndex(
+      (track) => track.id === trackToAdd.id
+    );
+    const newSearchList = [...searchResults];
+    newSearchList.splice(index, 1);
+    setSearchResults(newSearchList);
   };
 
   const removeFromPlaylist = (trackToRemove) => {
@@ -42,12 +49,16 @@ function App() {
     );
     const newTrackList = [...playlistTracks];
     newTrackList.splice(index, 1);
-    console.log(newTrackList);
     setPlaylistTracks(newTrackList);
+
+    setSearchResults((prev) => [...prev, trackToRemove]);
   };
 
-  const savePlaylist = (playlistName, trackList) => {
-    createAndFillPlaylist(playlistName, playlistTracks);
+  const savePlaylist = (playlistName) => {
+    createAndFillPlaylist(playlistName, playlistTracks).then(() => {
+      setPlaylistTracks([]);
+      makeSearch(searchTerm);
+    });
   };
 
   const makeSearch = (term) => {
@@ -62,35 +73,52 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <div className="header">Jammming {loggedIn}</div>
-      {loggedIn ? (
-        <div>
-          <SearchBar makeSearch={makeSearch} />
-          {searchResults.length > 0 ? (
-            <div>
-              <SearchResults
-                searchResults={searchResults}
-                searchTerm={searchTerm}
-                addToPlaylist={addToPlaylist}
-              />
-              <Playlist
-                savePlaylist={savePlaylist}
-                playlistTracks={playlistTracks}
-                removeFromPlaylist={removeFromPlaylist}
-              />
-            </div>
-          ) : (
-            <div />
-          )}
-        </div>
-      ) : (
-        <div className="authContainer">
-          <button onClick={makeAuthorization} className="searchButton">
-            Authorize
-          </button>
-        </div>
-      )}
+    <div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="success?" element={<SpotifyRedirect />} />
+
+          <Route
+            index
+            path="/"
+            element={
+              <div className="App">
+                <div className="header">Jammming</div>
+                {loggedIn ? (
+                  <div>
+                    <SearchBar makeSearch={makeSearch} />
+                    {searchResults.length > 0 ? (
+                      <div>
+                        <SearchResults
+                          searchResults={searchResults}
+                          searchTerm={searchTerm}
+                          addToPlaylist={addToPlaylist}
+                        />
+                        <Playlist
+                          savePlaylist={savePlaylist}
+                          playlistTracks={playlistTracks}
+                          removeFromPlaylist={removeFromPlaylist}
+                        />
+                      </div>
+                    ) : (
+                      <div />
+                    )}
+                  </div>
+                ) : (
+                  <div className="authContainer">
+                    <button
+                      onClick={makeAuthorization}
+                      className="searchButton"
+                    >
+                      Authorize
+                    </button>
+                  </div>
+                )}
+              </div>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

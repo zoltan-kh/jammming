@@ -11,7 +11,6 @@ function SearchBar({makeSearch}) {
     else{
       alert('Enter something to search!');
     }
-    
   };
 
   return (
